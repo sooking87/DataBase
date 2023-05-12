@@ -250,3 +250,69 @@ INSERT INTO
     `suppliers-parts-projects`.`project-developer` (`PDNO`, `PDNAME`, `ING`)
 VALUES ("PD1", "Smith", "J1"), ("PD2", "Jones", "J1"), ("PD3", "Blake", "J2"), ("PD4", "Adams", "J2"), ("PD5", "Clark", "J2"), ("PD6", "Blake", "J3"), ("PD7", "Clara", "J4"), ("PD8", "Shara", "J5"), ("PD9", "JiYoon", "J6"), ("PD10", "Sohn", "J7");
 ```
+
+## 5-2
+
+```sql
+CREATE INDEX idx_sno ON supplier (SNO);
+
+CREATE INDEX idx_pno ON part (PNO);
+
+CREATE INDEX idx_jno ON project (JNO);
+
+SHOW INDEX FROM supplier;
+
+SHOW INDEX FROM part;
+
+SHOW INDEX FROM project
+```
+
+## 5-3
+
+```sql
+CREATE SCHEMA `wholesale` ;
+
+CREATE TABLE `wholesale`.`supplier` (
+  `SNO` CHAR(5) NOT NULL,
+  `SNAME` VARCHAR(45) NOT NULL,
+  `STATUS` INT NULL,
+  `CITY` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`SNO`));
+
+insert into `wholesale`.`supplier` values('S1', 'Smith', 20, 'London');
+insert into `wholesale`.`supplier` values('S2', 'Jones', 10, 'Paris');
+insert into `wholesale`.`supplier` values('S3', 'Blake', 30, 'Paris');
+insert into `wholesale`.`supplier` values('S4', 'Clark', 20, 'London');
+insert into `wholesale`.`supplier` values('S5', 'Adams', 30, 'Athens');
+
+
+CREATE TABLE `wholesale`.`employee` (
+  `ENO` CHAR(5) NOT NULL,
+  `ENAME` VARCHAR(45) NOT NULL,
+  `OFFICECODE` CHAR(5) NULL,
+  PRIMARY KEY (`ENO`));
+
+insert into `wholesale`.`employee` values('E1', 'Smith', 'O1');
+insert into `wholesale`.`employee` values('E2', 'Jones', 'O1');
+insert into `wholesale`.`employee` values('E3', 'Blake', 'O2');
+insert into `wholesale`.`employee` values('E4', 'Clark', 'O2');
+insert into `wholesale`.`employee` values('E5', 'Adams', 'O2');
+insert into `wholesale`.`employee` values('E6', 'Clara', 'O3');
+insert into `wholesale`.`employee` values('E7', 'Sohn', 'O4');
+insert into `wholesale`.`employee` values('E8', 'Soo', 'O4');
+
+  CREATE TABLE `wholesale`.`customer` (
+  `CNO` CHAR(5) NOT NULL,
+  `CUSNAME` VARCHAR(45) NOT NULL,
+  `CITY` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`CNO`));
+
+insert into `wholesale`.`customer` values('C1', 'Choi', 'London');
+insert into `wholesale`.`customer` values('C2', 'Lee', 'Paris');
+insert into `wholesale`.`customer` values('C3', 'Yoon', 'Athens');
+insert into `wholesale`.`customer` values('C4', 'Han', 'Rome');
+insert into `wholesale`.`customer` values('C5', 'Park', 'Athens');
+insert into `wholesale`.`customer` values('C6', 'Eun', 'London');
+insert into `wholesale`.`customer` values('C7', 'Joo', 'Paris');
+insert into `wholesale`.`customer` values('C8', 'Yil', 'Oslo');
+```
