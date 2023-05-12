@@ -45,7 +45,7 @@ WHERE
 ```sql
 SELECT PNO, JNO, SUM(QTY)
 FROM spj
-GROUP BY PNO, JNO;
+GROUP BY JNO, PNO;
 ```
 
 ## 2-2
@@ -53,7 +53,7 @@ GROUP BY PNO, JNO;
 ```sql
 SELECT PNO
 FROM spj
-GROUP BY PNO, JNO
+GROUP BY PNO
 HAVING AVG(QTY) >= 320;
 ```
 
@@ -62,7 +62,7 @@ HAVING AVG(QTY) >= 320;
 ```sql
 SELECT JNO, CITY
 FROM project
-WHERE CITY LIKE '_o%'
+WHERE CITY LIKE '_o%';
 ```
 
 ## 2-4
@@ -70,17 +70,26 @@ WHERE CITY LIKE '_o%'
 ```sql
 SELECT JNO
 FROM project
-WHERE CITY IN (
-        SELECT JNO
+WHERE CITY = (
+        SELECT CITY
         FROM project
-        ORDER BY CITY LIMIT 1
-    )
+        ORDER BY CITY
+        LIMIT 1
+    );
 ```
 
 ## 2-5
 
 ```sql
-
+SELECT JNO
+FROM spj
+WHERE PNO = 'P1'
+GROUP BY JNO
+HAVING AVG(QTY) > (
+        SELECT MAX(QTY)
+        FROM spj
+        WHERE JNO = "J1"
+    );
 ```
 
 ## 3-1
@@ -100,16 +109,24 @@ WHERE EXISTS (
 ## 3-2
 
 ```sql
-SELECT JNO
-FROM spj
-WHERE NOT EXISTS (
-        SELECT *
-        FROM part
-        WHERE
-            part.`PNO` = spj.`PNO`
-            AND COLOR = 'Red'
-            AND CITY = 'London'
-    )
+SELECT DISTINCT JNO
+FROM project
+WHERE JNO NOT IN (
+        SELECT JNO
+        FROM spj
+        WHERE EXISTS (
+                SELECT
+                    DISTINCT JNO
+                FROM
+                    part,
+                    supplier
+                WHERE
+                    part.`PNO` = spj.`PNO`
+                    AND supplier.`SNO` = spj.`SNO`
+                    AND COLOR = 'Red'
+                    AND supplier.`CITY` = 'London'
+            )
+    );
 ```
 
 ## 3-3
@@ -123,7 +140,7 @@ WHERE EXISTS (
         WHERE
             spj.`SNO` = supplier.`SNO`
             AND SNO = 'S1'
-    )
+    );
 ```
 
 ## 3-4
@@ -147,5 +164,89 @@ UNION (
     WHERE
         spj.`JNO` = project.`JNO`
 )
-ORDER BY CITY
+ORDER BY CITY;
+```
+
+## 4-1
+
+```sql
+DELETE project
+FROM project, part, spj
+WHERE
+    project.`JNO` = spj.`JNO`
+    AND part.`PNO` = spj.`PNO`
+    AND part.`PNO` IS NULL;
+```
+
+## 4-2
+
+```sql
+INSERT INTO
+    `suppliers-parts-projects`.`supplier` (
+        `SNO`,
+        `SNAME`,
+        `STATUS`,
+        `CITY`
+    )
+VALUES (
+        "S10",
+        "Smith",
+         NULL,
+        "New York"
+    );
+```
+
+# 4-3
+
+```sql
+CREATE TABLE table1 (
+        SELECT PNO
+        FROM spj, supplier
+        WHERE
+            supplier.`SNO` = spj.`SNO`
+            AND supplier.`CITY` = "London"
+    )
+UNION (
+    SELECT PNO
+    FROM spj, project
+    WHERE
+        project.`JNO` = spj.`JNO`
+        AND project.`CITY` = "London"
+)
+ORDER BY PNO;
+```
+
+# 4-4
+
+```sql
+CREATE TABLE table2 (
+        SELECT JNO
+        FROM spj, supplier
+        WHERE
+            supplier.`SNO` = spj.`SNO`
+            AND supplier.`CITY` = "London"
+    )
+UNION (
+    SELECT JNO
+    FROM project
+    WHERE
+        project.`CITY` = "London"
+)
+ORDER BY JNO;
+```
+
+## 5-1
+
+```sql
+CREATE TABLE
+    `suppliers-parts-projects`.`project-developer` (
+        `PDNO` CHAR(4) NOT NULL,
+        `PDNAME` VARCHAR(45) NOT NULL,
+        `ING` CHAR(2) NOT NULL,
+        PRIMARY KEY (`PDNO`)
+    );
+
+INSERT INTO
+    `suppliers-parts-projects`.`project-developer` (`PDNO`, `PDNAME`, `ING`)
+VALUES ("PD1", "Smith", "J1"), ("PD2", "Jones", "J1"), ("PD3", "Blake", "J2"), ("PD4", "Adams", "J2"), ("PD5", "Clark", "J2"), ("PD6", "Blake", "J3"), ("PD7", "Clara", "J4"), ("PD8", "Shara", "J5"), ("PD9", "JiYoon", "J6"), ("PD10", "Sohn", "J7");
 ```
