@@ -108,6 +108,29 @@ def customer_info():
 def sign_up():
     # 회원 가입
     print('sign_up()')
+    db = pymysql.connect(host='localhost', user='root', password='sks0hn01!!', db='product-purchase-history-management',
+                         charset='utf8')
+    cur = db.cursor()
+
+    newID = input('[필수] 사용할 ID를 입력해주세요: ')
+    newNAME = input('[필수] 사용자의 이름을 입력해주세요: ')
+    newAGE = int(input('[필수] 사용자의 나이를 입력해주세요: '))
+    newSEX = int(input('[필수] 성별을 입력해주세요. (남(0) / 여(1)): '))
+    newCITY = input('[필수] 주소지를 입력해주세요: ')
+    newPhoneNUM = input('[선택] 사용자의 전화번호를 입력해주세요: ')
+
+    SEX = ''
+    if newSEX == 0:
+        SEX = 'MALE'
+    elif newSEX == 1:
+        SEX = 'FEMALE'
+
+    sql = 'insert into `Product-Purchase-History-Management` `customer` values (%s %s %d %s %s %s)'
+    val = (newID, newNAME, newAGE, newPhoneNUM, newCITY, SEX)
+    cur.execute(sql, val)
+    rows = cur.fetchall()
+
+    print('\n가입이 완료되었습니다.\n')
 
 
 def sign_in():
