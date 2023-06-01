@@ -80,7 +80,7 @@ def order():
 
             rows = cur.fetchall()
             cnt = rows[0][4]
-            # CNT가 1이상이므로 주문이 가능하다면
+            # CNT가 1이상이므로(테이블 제약조건에 있음) 주문이 가능하다면
             if (rows):
                 # product = pd.DataFrame(rows)
                 # print(tabulate(product,
@@ -110,11 +110,11 @@ def order():
 
                     # print('cart 정보 삭제 완료')
                 # product TABLE에서 수량(CNT) -1하기
-                ## cnt -= 1
-                ## update = 'UPDATE product SET CNT=%s WHERE PNO=%s'
-                ## val = (cnt, ordered_pno)
-                ## cur.execute(update, val)
-                # print('product CNT 업데이트 완료')
+                cnt -= 1
+                update = 'UPDATE product SET CNT=%s WHERE PNO=%s'
+                val = (cnt, ordered_pno)
+                cur.execute(update, val)
+                print('product CNT 업데이트 완료')
                 
                 # 주문하려는 상품이 카트에 존재하지 않다면 그냥 사용자 정보만 보여주면 됨.
                 # purchase TABLE에는 INSERT
@@ -390,7 +390,7 @@ def start():
     print('메뉴를 선택해주세요.')
     print('1. 회원 가입하기')
     print('2. 회원 탈퇴하기')
-    print('3. 회원 조회하기')
+    print('3. 비밀번호 조회하기')
     print('4. 구매 가능한 상품 내역 보기')
     print('5. 상품 주문하기')
     print('6. 카트에 상품 넣기')

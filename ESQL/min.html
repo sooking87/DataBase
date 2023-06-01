@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+<?PHP
+    $con = mysqli_connect('localhost', 'root', 'Min02choi!', 'meal_kit_market');
+    $query = "SELECT * FROM product";
+    $result = mysqli_query($con, $query);
+
+    while ($row = mysqli_fetch_row($result)) {
+        print_r($row);
+        echo "<br>";
+
+    }
+?>
+</body>
+</html>
