@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device=width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>My SHOP</title>
+</head>
+
+<body>
+    <h2>My SHOP</h2>
+    <h3>ORDER/CART</h3>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="page_order.html">Order/Cart</a></li>
+        <li><a href="page_my_page.html">My Page</a></li>
+        <li><a href="page_sign_up.html">Sign Up</a></li>
+    </ul>
+    
+    <table border="1" id="order-table">
+        <tr>
+            <th>TOP</th>
+            <th>상품명</th>
+            <th>가격</th>
+        </tr>
+        <?php
+            $db = mysqli_connect("localhost", "root", "sks0hn01!!", "product-purchase-history-management");
+            if (mysqli_connect_errno()) {
+                echo "Error: Could not connect to database server.";
+                exit;
+            }
+            // 4: 상품명, 2: 가격
+            $sql = "SELECT * FROM product WHERE PINFO='TOP'";
+            $result = mysqli_query($db, $sql);
+            $cnt = 0;
+            while ($row = mysqli_fetch_row($result)){
+                echo "<tr>";
+                echo "<td>$cnt</td><td>$row[4]</td><td>$row[2]</td>";
+                echo "</tr>";
+                $cnt++;
+            }
+        ?>
+    </table>
+    <table border="1" id="order-table">
+        <tr>
+            <th>BOTTOM</th>
+            <th>상품명</th>
+            <th>가격</th>
+        </tr>
+        <?php
+            $db = mysqli_connect("localhost", "root", "sks0hn01!!", "product-purchase-history-management");
+            if (mysqli_connect_errno()) {
+                echo "Error: Could not connect to database server.";
+                exit;
+            }
+            // 4: 상품명, 2: 가격
+            $sql = "SELECT * FROM product WHERE PINFO='BOTTOM'";
+            $result = mysqli_query($db, $sql);
+
+            $cnt = 0;
+            while ($row = mysqli_fetch_row($result)){
+                echo "<tr>";
+                echo "<td>$cnt</td><td>$row[4]</td><td>$row[2]</td>";
+                echo "</tr>";
+                $cnt++;
+            }
+        ?>
+    </table>
+    <table border="1" id="order-table">
+        <tr>
+            <th>SHOES</th>
+            <th>상품명</th>
+            <th>가격</th>
+        </tr>
+        <?php
+            $db = mysqli_connect("localhost", "root", "sks0hn01!!", "product-purchase-history-management");
+            if (mysqli_connect_errno()) {
+                echo "Error: Could not connect to database server.";
+                exit;
+            }
+            // 4: 상품명, 2: 가격
+            $sql = "SELECT * FROM product WHERE PINFO='SHOES'";
+            $result = mysqli_query($db, $sql);
+
+            $cnt = 0;
+            while ($row = mysqli_fetch_row($result)){
+                echo "<tr>";
+                echo "<td>$cnt</td><td>$row[4]</td><td>$row[2]</td>";
+                echo "</tr>";
+                $cnt++;
+            }
+        ?>
+    </table>
+    <table border="1" id="order-table">
+        <tr>
+            <th>ACC</th>
+            <th>상품명</th>
+            <th>가격</th>
+        </tr>
+        <?php
+            $db = mysqli_connect("localhost", "root", "sks0hn01!!", "product-purchase-history-management");
+            if (mysqli_connect_errno()) {
+                echo "Error: Could not connect to database server.";
+                exit;
+            }
+            // 4: 상품명, 2: 가격
+            $sql = "SELECT * FROM product WHERE PINFO='ACC'";
+            $result = mysqli_query($db, $sql);
+
+            $cnt = 0;
+            while ($row = mysqli_fetch_row($result)){
+                echo "<tr>";
+                echo "<td>$cnt</td><td>$row[4]</td><td>$row[2]</td>";
+                echo "</tr>";
+                $cnt++;
+            }
+        ?>
+    </table>
+    <form method="POST" action="order.php">
+        <?php
+            $db = mysqli_connect("localhost", "root", "sks0hn01!!", "product-purchase-history-management");
+            if (mysqli_connect_errno()) {
+                echo "Error: Could not connect to database server.";
+                exit;
+            }
+
+            $category = "SELECT DISTINCT PINFO FROM product";
+            $result = mysqli_query($db, $category);
+            
+            echo "<span>CATEGORY: &nbsp</span>";
+            while ($row = mysqli_fetch_row($result)) {
+                echo "<span>$row[0], &nbsp</span>";
+            }
+            
+
+        ?>
+        <table>
+            <tr>
+                <td> 카테고리: </td>
+                <td><input type="text" name="category"></td>
+                <td> 번호: </td>
+                <td><input type="text" name="num"></td>
+                <td>
+                <input type="submit" value="주문하기" name="order">
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+
+</html>

@@ -406,7 +406,6 @@ def start():
 # show_product_list()
 while True:
     menu = start()
-
     if menu == '1':
         sign_up()
     elif menu == '2':

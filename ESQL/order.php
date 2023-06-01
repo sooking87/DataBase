@@ -1,24 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
 
-<?php
-error_reporting(E_ALL);
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device=width, initial-scale=1.0">
+    <title>My SHOP</title>
+</head>
 
-ini_set('display_errors', '1');
-$db = mysqli_connect("localhost", "root", "Min02choi!", "meal_kit_market");
-if (mysqli_connect_errno()) {
-    echo "Error: Could not connect to database server.";
-    exit;
-}
-$sql = "SELECT cno, name FROM customer";
-$result = mysqli_query($db, $sql);
-// php에서 사용가능한 데이터 형태인 배열로 반환
-;
-//        echo $row;
-//        print_r($row);
-while ($row = mysqli_fetch_row($result)){
-    echo "<tr>";
-    echo "<td>$row[0]</td><td>$row[1]</td>";
-    echo "<tr>";
-}
+<body>
+    <h3>주문이 완료되었습니다.</h3>
 
-// mysqli_close($db);
-?>
+    <?php
+        $db = mysqli_connect("localhost", "root", "sks0hn01!!", "product-purchase-history-management");
+        if (mysqli_connect_errno()) {
+            echo "Error: Could not connect to database server.";
+            exit;
+        }
+        $category = $_POST['category'];
+        $num = $_POST['num'];
+        $PINFO = strtoupper($category);
+        $num = (int)$num;
+
+        $sql = 'SELECT * FROM(SELECT ROW_NUMBER() OVER(ORDER BY PRICE) AS num, PNO, PNAME, PRICE, CNT FROM product WHERE PINFO="$PINFO") temp WHERE temp.num="$num"';
+        $result = mysqli_query($db, $sql);
+        $row = mysqli_fetch_row($result);
+        print_r($row);
+        if ($row) {
+            echo "<h2>tlqkf</h2>";
+        }
+    ?>
+    
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device=width, initial-scale=1.0">
+    <title>My SHOP</title>
+</head>
+
+<body>
+    <h2>My SHOP</h2>
+    <h3>Sign UP</h3>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="page_order.html">Order/Cart</a></li>
+        <li><a href="page_my_page.html">My Page</a></li>
+        <li><a href="page_sign_up.html">Sign Up</a></li>
+    </ul>
+    <form method='POST' action="sign_up.php">
+        <table id="sign_up_form">
+            <caption>회원 가입</caption>
+            <tr>
+                <td>아이디: </td>
+                <td><input type="text" name="newID"></td>
+            </tr>
+            <tr>
+                <td>비밀번호: </td>
+                <td><input type="text" name="newPW"></td>
+            </tr>
+            <tr>
+                <td>이름: </td>
+                <td><input type="text" name="newNAME"></td>
+            </tr>
+            <tr>
+                <td>나이: </td>
+                <td><input type="text" name="newAGE"></td>
+            </tr>
+            <tr>
+                <td>성별: </td>
+                <td><input type="radio" name="sex" value="MALE">MALE</td>
+                <td><input type="radio" name="sex" value="FEMALE">FEMALE</td>
+            </tr>
+            <tr>
+                <td>거주지역: </td>
+                <td><input type="text" name="newCITY"></td>
+            </tr>
+            <tr>
+                <td>전화번호: </td>
+                <td><input type="text" name="newPhoneNUM" placeholder="xxx-xxxx-xxxx"></td>
+            </tr>
+        </table>
+        <input type="reset" value="reset"/>
+        <input type="submit" value="sign_up">
+    </form>
+</body>
+
+</html>
