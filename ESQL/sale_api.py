@@ -179,7 +179,6 @@ def cart():
             # ROW_NUMBER를 이용해서 사용자가 원하는 카테고리의 번호만 입력으로도 주문 가능 상품인지 아닌지 조회하는 쿼리
             sql = 'SELECT * FROM(SELECT RANK() OVER(ORDER BY PRICE) AS num, PNO, PNAME, PRICE, CNT FROM product WHERE PINFO=%s) temp WHERE temp.num=%s'
             val = (cate, num)
-            print("tlqkf")
             cur.execute(sql, val)
 
             rows = cur.fetchall()
