@@ -105,6 +105,11 @@ insert into `Product-Purchase-History-Management`.`cart` values('sksohn01', '00-
 insert into `Product-Purchase-History-Management`.`cart` values('sksohn01', '01-230522-1015', '2023-05-26-21:10');
 insert into `Product-Purchase-History-Management`.`cart` values('sksohn01', '02-230524-2239', '2023-05-26-21:20');
 insert into `Product-Purchase-History-Management`.`cart` values('sksohn01', '03-230525-1148', '2023-05-27-23:53');
+
+insert into `Product-Purchase-History-Management`.`cart` values('sksohn01', '01-230519-1028', '2023-05-31-19:09');
+insert into `Product-Purchase-History-Management`.`cart` values('a', '01-230519-1028', '2023-05-31-23:00');
+insert into `Product-Purchase-History-Management`.`cart` values('sksohn01', '02-230524-2239', '2023-05-31-23:04');
+insert into `Product-Purchase-History-Management`.`cart` values('sksohn01', '01-230522-1015', '2023-06-01-21:41');
 ```
 
 ### deliveryperson TABLE

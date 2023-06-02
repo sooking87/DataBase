@@ -97,24 +97,18 @@ def order():
                 cur.execute(sql2, val)
                 
                 is_in_cart = cur.fetchall()
-                # print(is_in_cart)
-                # 주문하려는 상품이 카트에 존재한다면
+                indate = None
                 if is_in_cart:
-                    # cart TABLE에 있는 상품은 DELETE
-                    # print("조회한 결과: ")
-                    # print(tabulate(product,
-                    #             tablefmt='psql', showindex=False))
-                    sql = 'DELETE FROM cart WHERE cart.PNO=%s AND cart.CusID=%s'
-                    val = (ordered_pno, cusID)
-                    cur.execute(sql, val)
-
-                    # print('cart 정보 삭제 완료')
+                    indate = is_in_cart[0][2]
+                
+                    
                 # product TABLE에서 수량(CNT) -1하기
+                # print(indate)
                 cnt -= 1
                 update = 'UPDATE product SET CNT=%s WHERE PNO=%s'
                 val = (cnt, ordered_pno)
                 cur.execute(update, val)
-                print('product CNT 업데이트 완료')
+                # print('product CNT 업데이트 완료')
                 
                 # 주문하려는 상품이 카트에 존재하지 않다면 그냥 사용자 정보만 보여주면 됨.
                 # purchase TABLE에는 INSERT
@@ -135,16 +129,32 @@ def order():
                 cur.execute(insert, val)
                 # print('purchase TABLE update 완료')
 
-                # 주문 완료 후 성함, 의류 카테코리, 가격, 상품명, 주문 시간, 배당된 택배기사 번호를 출력하기 위한 쿼리문
-                notice = 'SELECT customer.CusNAME, product.PINFO, product.PRICE, product.PNAME, purchase.DATE, deliveryperson.DNAME FROM customer, product, purchase, deliveryperson WHERE customer.CusID=purchase.CusID AND purchase.PNO=product.PNO AND purchase.DNO=deliveryperson.DNO AND customer.CusID=%s AND product.PNO=%s AND deliveryperson.DNO=%s'
-                val = (cusID, ordered_pno, charge)
-                cur.execute(notice, val)
+                if is_in_cart:
+                    # 주문 완료 후 성함, 의류 카테코리, 가격, 상품명, 주문 시간, 배당된 택배기사 번호, 카트에 넣은 날짜를 출력하기 위한 쿼리문
+                    notice = 'SELECT customer.CusNAME, product.PINFO, product.PRICE, product.PNAME, purchase.DATE, deliveryperson.DNAME, cart.InDATE FROM customer, product, purchase, deliveryperson, cart WHERE customer.CusID=purchase.CusID AND purchase.PNO=product.PNO AND purchase.DNO=deliveryperson.DNO AND cart.CusID=customer.CusID AND customer.CusID=%s AND product.PNO=%s AND deliveryperson.DNO=%s AND cart.InDATE=%s'
+                    val = (cusID, ordered_pno, charge, indate)
+                    cur.execute(notice, val)
+                else:
+                    # 주문 완료 후 성함, 의류 카테코리, 가격, 상품명, 주문 시간, 배당된 택배기사 번호 넣은 날짜를 출력하기 위한 쿼리문
+                    notice = 'SELECT customer.CusNAME, product.PINFO, product.PRICE, product.PNAME, purchase.DATE, deliveryperson.DNAME FROM customer, product, purchase, deliveryperson WHERE customer.CusID=purchase.CusID AND purchase.PNO=product.PNO AND purchase.DNO=deliveryperson.DNO AND customer.CusID=%s AND product.PNO=%s AND deliveryperson.DNO=%s'
+                    val = (cusID, ordered_pno, charge)
+                    cur.execute(notice, val)
 
                 rows = cur.fetchall()
                 result = pd.DataFrame(rows)
                 print('\n%s님 상품 주문이 완료되었습니다.\n' %cusID)
                 print(tabulate(result, 
                         tablefmt='psql', showindex=False))
+                # print(is_in_cart)
+                # 주문하려는 상품이 카트에 존재한다면
+                if is_in_cart:
+                    # cart TABLE에 있는 상품은 DELETE
+                    # print("조회한 결과: ")
+                    # print(tabulate(product,
+                    #             tablefmt='psql', showindex=False))
+                    sql = 'DELETE FROM cart WHERE cart.PNO=%s AND cart.CusID=%s'
+                    val = (ordered_pno, cusID)
+                    cur.execute(sql, val)
                 print('감사합니다.')
                 break
             else:
@@ -334,7 +344,7 @@ def sign_in():
     else:
         print('\n사용자의 ID가 회원 가입이 되지 않았습니다. 회원 가입 후 이용해주시기 바랍니다.')
         return -1, -1
-    cur.close()
+    
 
 def check_pw():
     # 비밀번호 조회하기
