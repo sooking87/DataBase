@@ -392,7 +392,18 @@ def resign():
         break
     cur.close()        
         
+def check_cnt():
+    db = pymysql.connect(host='localhost', user='root', password='sks0hn01!!', db='product-purchase-history-management',
+                         charset='utf8')
+    cur = db.cursor()
 
+    cnt = "SELECT PNAME, CNT FROM product"
+    cur.execute(cnt)
+    rows = cur.fetchall()
+    products = pd.DataFrame(rows)
+    headers = ['상품명', '수량']
+    print(tabulate(products, headers=headers, 
+          tablefmt='psql', showindex=False), '\n')
 
 def start():
     print('-------------------------')
@@ -405,6 +416,7 @@ def start():
     print('6. 카트에 상품 넣기')
     print('7. 주문 내역 조회하기')
     print('8. 카트 내역 조회하기')
+    print('9. 상품 수량 확인하기')
     print('0. 종료')
     print('\n')
 
@@ -431,6 +443,8 @@ while True:
         customer_info()
     elif menu == '8':
         check_cart()
+    elif menu == '9':
+        check_cnt()
     elif menu == '0':
         print('\n서비스를 이용해주셔서 감사합니다.\n')
         break
